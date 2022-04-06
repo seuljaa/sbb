@@ -8,25 +8,20 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import com.mysite.sbb.question.Question;
 import com.mysite.sbb.question.QuestionRepository;
+import com.mysite.sbb.question.QuestionService;
 
 @SpringBootTest
 class SbbApplicationTests {
 	
 	@Autowired
-	private QuestionRepository questionRepository;
+	private QuestionService questionService; 
 	
 	@Test
 	void testJpa() {
-		Question q1 = new Question();
-		q1.setSubject("¡¶∏Ò1¿‘¥œ¥Ÿ.");
-		q1.setContent("≥ªøÎ1¿‘¥œ¥Ÿ.");
-		q1.setCreateDate(LocalDateTime.now());
-		questionRepository.save(q1);
-		
-		Question q2 = new Question();
-		q2.setSubject("¡¶∏Ò2¿‘¥œ¥Ÿ.");
-		q2.setContent("≥ªøÎ2¿‘¥œ¥Ÿ.");
-		q2.setCreateDate(LocalDateTime.now());
-		questionRepository.save(q2);
+		for (int i = 1; i <= 300; i++) {
+            String subject = String.format("ÌÖåÏä§Ìä∏ Îç∞Ïù¥ÌÑ∞ÏûÖÎãàÎã§:[%03d]", i);
+            String content = "ÎÇ¥Ïö©Î¨¥";
+            this.questionService.create(subject, content);
+        }
 	}
 }

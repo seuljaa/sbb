@@ -1,7 +1,10 @@
 package com.mysite.sbb.answer;
 
+import javax.validation.Valid;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,9 +23,13 @@ public class AnswerController {
 	private final AnswerService answerService;
 	
 	@RequestMapping("/create/{id}")
-	public String answerCreate(Model model, @PathVariable("id") Integer id, @RequestParam String content) {
+	public String answerCreate(Model model, @PathVariable("id") Integer id, @Valid AnswerForm answerForm, BindingResult bindingResult) {
 		QuestionDto questionDto = this.questionService.getQuestion(id);
-		this.answerService.create(questionDto, content);
+		if( bindingResult.hasErrors() ) {
+			model.addAttribute("question", questionDto);
+			return "question_detail";
+		}
+		this.answerService.create(questionDto, answerForm.getContent());
 		return String.format("redirect:/question/detail/%s", id);
 	}
 }
