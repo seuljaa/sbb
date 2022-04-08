@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.mysite.sbb.DataNotFoundException;
@@ -21,9 +24,13 @@ public class QuestionService {
 		return modelMapper.map(question, QuestionDto.class);
 	}
 	
-	public List<QuestionDto> getList(){
-		List<Question> questionList = this.questionRepository.findAll();
-		List<QuestionDto> questionDtoList = questionList.stream().map(q -> of(q)).toList();
+	public Page<QuestionDto> getList(int page){
+		Pageable pageable = PageRequest.of(page, 10);
+		// page값을 숫자로 받아와서 pageable의 조건을 정해준다.
+		Page<Question> questionList = this.questionRepository.findAll(pageable);
+		// questions 리포지터리에서 모든 값을 꺼내오는데 아까 정해둔 조건(limit)대로 꺼내 Page를 Question의 list형태로 만든다.
+		Page<QuestionDto> questionDtoList = questionList.map(q -> of(q));
+		// 컨트롤러에서는 Question을 쓰지않고 QuestionDto를 사용하기때문에 변환한후 return한다.
 		return questionDtoList;
 	}
 	
