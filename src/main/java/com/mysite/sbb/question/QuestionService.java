@@ -1,6 +1,7 @@
 package com.mysite.sbb.question;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -8,6 +9,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.mysite.sbb.DataNotFoundException;
@@ -25,7 +27,9 @@ public class QuestionService {
 	}
 	
 	public Page<QuestionDto> getList(int page){
-		Pageable pageable = PageRequest.of(page, 10);
+		List<Sort.Order> sorts = new ArrayList<>();
+        sorts.add(Sort.Order.desc("createDate"));
+		Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts));
 		// page값을 숫자로 받아와서 pageable의 조건을 정해준다.
 		Page<Question> questionList = this.questionRepository.findAll(pageable);
 		// questions 리포지터리에서 모든 값을 꺼내오는데 아까 정해둔 조건(limit)대로 꺼내 Page를 Question의 list형태로 만든다.
