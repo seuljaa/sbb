@@ -28,7 +28,7 @@ public class QuestionService {
 	
 	public Page<QuestionDto> getList(int page){
 		List<Sort.Order> sorts = new ArrayList<>();
-        sorts.add(Sort.Order.desc("createDate"));
+        sorts.add(Sort.Order.desc("id"));
 		Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts));
 		// page값을 숫자로 받아와서 pageable의 조건을 정해준다.
 		Page<Question> questionList = this.questionRepository.findAll(pageable);
