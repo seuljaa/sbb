@@ -6,6 +6,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import com.mysite.sbb.question.QuestionDto;
+import com.mysite.sbb.user.SiteUserDto;
 
 import lombok.RequiredArgsConstructor;
 
@@ -19,11 +20,12 @@ public class AnswerService {
 		return modelMapper.map(answerDto, Answer.class);
 	}
 	
-	public AnswerDto create(QuestionDto questionDto, String content) {
+	public AnswerDto create(QuestionDto questionDto, String content, SiteUserDto author) {
 		AnswerDto answerDto = new AnswerDto();
 		answerDto.setContent(content);
 		answerDto.setCreateDate(LocalDateTime.now());
 		answerDto.setQuestion(questionDto);
+		answerDto.setAuthor(author);
 		Answer answer = of(answerDto);
 		this.answerRepository.save(answer);
 		return answerDto;

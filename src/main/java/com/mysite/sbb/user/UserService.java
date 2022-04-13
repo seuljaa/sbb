@@ -37,6 +37,15 @@ public class UserService {
 		user.setPassword(passwordEncoder.encode(password));
 		this.siteUserRepository.save(user);
 		return of(user);
-		
+	}
+	
+	public SiteUserDto getUser(String username) {
+		Optional<SiteUser> siteUser = this.siteUserRepository.findByusername(username);
+		if(siteUser.isPresent()) {
+			return of(siteUser.get());
+		}
+		else {
+			throw new DataNotFoundException("site user not found");
+		}
 	}
 }
