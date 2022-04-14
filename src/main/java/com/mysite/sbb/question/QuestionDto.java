@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import com.mysite.sbb.answer.AnswerDto;
 import com.mysite.sbb.user.SiteUser;
+import com.mysite.sbb.user.SiteUserDto;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -16,5 +17,5 @@ public class QuestionDto {
 	private String content;
 	private List<AnswerDto> answerList;
 	private LocalDateTime createDate;
-	private SiteUser author;
+	private SiteUserDto author;
 }

@@ -1,5 +1,6 @@
 package com.mysite.sbb.question;
 
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +14,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.mysite.sbb.DataNotFoundException;
+import com.mysite.sbb.user.SiteUserDto;
 
 import lombok.RequiredArgsConstructor;
 
@@ -24,6 +26,10 @@ public class QuestionService {
 	
 	private QuestionDto of(Question question) {
 		return modelMapper.map(question, QuestionDto.class);
+	}
+	
+	private Question of(QuestionDto questionDto) {
+		return modelMapper.map(questionDto, Question.class);
 	}
 	
 	public Page<QuestionDto> getList(int page){
@@ -48,12 +54,16 @@ public class QuestionService {
 		} 
 	}
 	
-	public QuestionDto create(String subject, String content) {
-		Question q = new Question();
-		q.setSubject(subject);
-		q.setContent(content);
-		q.setCreateDate(LocalDateTime.now());
-		q = this.questionRepository.save(q);
-		return of(q);
+	public QuestionDto create(String subject, String content, SiteUserDto user) {
+		QuestionDto questionDto = new QuestionDto();
+		questionDto.setSubject(subject);
+		questionDto.setContent(content);
+		questionDto.setCreateDate(LocalDateTime.now());
+		questionDto.setAuthor(user);
+		Question question = new Question();
+		question = of(questionDto);
+		this.questionRepository.save(question);
+		return questionDto;
 	}
+
 }
